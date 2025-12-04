@@ -33,6 +33,7 @@ import (
 func (p *Portal) handleHTTPSandbox(ctx context.Context, w http.ResponseWriter, r *http.Request, rr *requests.Request) error {
 	var sandboxID, sandboxPartition, sandboxSecret string
 	p.disableClientCache(w)
+
 	sandboxEndpoint, err := getEndpoint(r.URL.Path, "/sandbox/")
 	if err != nil {
 		p.logger.Debug(

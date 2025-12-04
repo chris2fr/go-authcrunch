@@ -20,7 +20,7 @@ info:
 build: templates
 	@mkdir -p bin/
 	@rm -rf ./bin/*
-	@versioned -sync ./pkg/identity/database.go
+	# @versioned -sync ./pkg/identity/database.go
 	@CGO_ENABLED=0 go build -o ./bin/authdbctl $(VERBOSE) \
 		-ldflags="-w -s \
 		-X main.appVersion=$(APP_VERSION) \
@@ -165,14 +165,14 @@ dep:
 	@echo "Making dependencies check ..."
 	@golint || go install golang.org/x/lint/golint@latest
 	@go install github.com/kyoh86/richgo@latest
-	@versioned || go install github.com/greenpau/versioned/cmd/versioned@latest
+	# @versioned || go install github.com/greenpau/versioned/cmd/versioned@latest
 	@echo "$@: complete"
 
 .PHONY: license
 license:
-	@versioned || go install github.com/greenpau/versioned/cmd/versioned@latest
-	@for f in `find ./ -type f -name '*.go'`; do versioned -addlicense -copyright="Paul Greenberg greenpau@outlook.com" -year=2022 -filepath=$$f; done
-	@#for f in `find ./ -type f -name '*.go'`; do versioned -striplicense -filepath=$$f; done
+	# @versioned || go install github.com/greenpau/versioned/cmd/versioned@latest
+	# @for f in `find ./ -type f -name '*.go'`; do versioned -addlicense -copyright="Paul Greenberg greenpau@outlook.com" -year=2022 -filepath=$$f; done
+	# @#for f in `find ./ -type f -name '*.go'`; do versioned -striplicense -filepath=$$f; done
 	@echo "$@: complete"
 
 .PHONY: release
@@ -182,11 +182,11 @@ release:
 	@go mod verify;
 	@if [ $(GIT_BRANCH) != "main" ]; then echo "cannot release to non-main branch $(GIT_BRANCH)" && false; fi
 	@git diff-index --quiet HEAD -- || ( echo "git directory is dirty, commit changes first" && false )
-	@versioned -patch
+	# @versioned -patch
 	@echo "Patched version"
 	@git add VERSION
-	@versioned -sync ./cmd/authdbctl/main.go
-	@versioned -sync ./pkg/identity/database.go
+	# @versioned -sync ./cmd/authdbctl/main.go
+	# @versioned -sync ./pkg/identity/database.go
 	@git add cmd/authdbctl/main.go ./pkg/identity/database.go
 	@git commit -m "released v`cat VERSION | head -1`"
 	@git tag -a v`cat VERSION | head -1` -m "v`cat VERSION | head -1`"

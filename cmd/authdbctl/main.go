@@ -16,11 +16,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/urfave/cli/v2"
 	"log"
 	"os"
 
+	"github.com/urfave/cli/v2"
+
 	"github.com/greenpau/versioned"
+
+	"github.com/BurntSushi/toml"
+
+	"github.com/nicksnyder/go-i18n/v2/i18n"
+	"golang.org/x/text/language"
 )
 
 var (
@@ -34,8 +40,71 @@ var (
 )
 
 func init() {
+
+	bundle := i18n.NewBundle(language.English)
+	bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
+	// No need to load active.en.toml since we are providing default translations.
+	bundle.MustLoadMessageFile("assets/locale/active.fr.toml")
+	localizer := i18n.NewLocalizer(bundle, language.English.String(), language.French.String()) // Initialize localizer
+	Messageappdescription := localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "app-description",
+			Other: "AuthDB management client",
+		},
+	})
+	Messageconfig := localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "config",
+			Other: "Sets `PATH` to configuration file",
+		},
+	})
+	Messagetokenpath := localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "token-path",
+			Other: "Sets `PATH` to token file",
+		},
+	})
+	Messageformat := localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "format",
+			Other: "Sets `NAME` of the output format",
+		},
+	})
+	Messagedebug := localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "debug",
+			Other: "Enabled debug logging",
+		},
+	})
+	Messageconnect := localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "connect",
+			Other: "connect to auth portal and obtain access token",
+		},
+	})
+	Messagemetadata := localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "metadata",
+			Other: "fetch metadata",
+		},
+	})
+	Messageadd := localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "add",
+			Other: "add database objects",
+		},
+	})
+	Messagelist := localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "list",
+			Other: "list database objects",
+		},
+	})
+	// i18n.MustLoadTranslationFile("./locale/en-us.all.json")
+	// T, _ := i18n.Tfunc("en-US")
+
 	app = versioned.NewPackageManager("authdbctl")
-	app.Description = "AuthDB management client"
+	app.Description = Messageappdescription
 	app.Documentation = "https://github.com/greenpau/go-authcrunch/"
 	app.SetVersion(appVersion, "1.1.7")
 	app.SetGitBranch(gitBranch, "main")
@@ -57,48 +126,48 @@ func init() {
 	sh.Flags = append(sh.Flags, &cli.StringFlag{
 		Name:        "config",
 		Aliases:     []string{"c"},
-		Usage:       "Sets `PATH` to configuration file",
+		Usage:       Messageconfig,
 		Value:       `~/.config/authdbctl/config.yaml`,
 		DefaultText: `~/.config/authdbctl/config.yaml`,
 		EnvVars:     []string{"AUTHDBCTL_CONFIG_PATH"},
 	})
 	sh.Flags = append(sh.Flags, &cli.StringFlag{
 		Name:        "token-path",
-		Usage:       "Sets `PATH` to token file",
+		Usage:       Messagetokenpath,
 		Value:       `~/.config/authdbctl/token.jwt`,
 		DefaultText: `~/.config/authdbctl/token.jwt`,
 		EnvVars:     []string{"AUTHDBCTL_TOKEN_PATH"},
 	})
 	sh.Flags = append(sh.Flags, &cli.StringFlag{
 		Name:        "format",
-		Usage:       "Sets `NAME` of the output format",
+		Usage:       Messageformat,
 		Value:       `json`,
 		DefaultText: `json`,
 		EnvVars:     []string{"AUTHDBCTL_OUTPUT_FORMAT"},
 	})
 	sh.Flags = append(sh.Flags, &cli.BoolFlag{
 		Name:  "debug",
-		Usage: "Enabled debug logging",
+		Usage: Messagedebug,
 	})
 	sh.Commands = []*cli.Command{
 		{
 			Name:   "connect",
-			Usage:  "connect to auth portal and obtain access token",
+			Usage:  Messageconnect,
 			Action: connect,
 		},
 		{
 			Name:   "metadata",
-			Usage:  "fetch metadata",
+			Usage:  Messagemetadata,
 			Action: metadata,
 		},
 		{
 			Name:        "add",
-			Usage:       "add database objects",
+			Usage:       Messageadd,
 			Subcommands: addSubcmd,
 		},
 		{
 			Name:        "list",
-			Usage:       "list database objects",
+			Usage:       Messagelist,
 			Subcommands: listSubcmd,
 		},
 	}

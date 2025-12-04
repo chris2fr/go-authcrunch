@@ -3,6 +3,7 @@ module github.com/greenpau/go-authcrunch
 go 1.24
 
 require (
+	github.com/BurntSushi/toml v1.5.0
 	github.com/crewjam/saml v0.4.14
 	github.com/emersion/go-sasl v0.0.0-20241020182733-b788ff22d5a6
 	github.com/emersion/go-smtp v0.21.3
@@ -12,11 +13,13 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/greenpau/versioned v1.0.30
 	github.com/iancoleman/strcase v0.3.0
+	github.com/nicksnyder/go-i18n/v2 v2.6.0
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/urfave/cli/v2 v2.27.1
 	go.uber.org/zap v1.27.0
 	golang.org/x/crypto v0.36.0
 	golang.org/x/net v0.33.0
+	golang.org/x/text v0.23.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -28,6 +31,7 @@ require (
 	github.com/go-asn1-ber/asn1-ber v1.5.7 // indirect
 	github.com/jonboulle/clockwork v0.5.0 // indirect
 	github.com/mattermost/xml-roundtrip-validator v0.1.0 // indirect
+	github.com/nicksnyder/go-i18n v1.10.3 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/russellhaering/goxmldsig v1.5.0 // indirect

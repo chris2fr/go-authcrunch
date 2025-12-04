@@ -46,8 +46,8 @@ done
 
 printf "}\n" >> ${TMPL_BODY_FILE}
 go fmt ${TMPL_BODY_FILE}
-versioned -addlicense -copyright="Paul Greenberg greenpau@outlook.com" -year=2022 -filepath=${TMPL_BODY_FILE}
+# versioned -addlicense -copyright="Paul Greenberg greenpau@outlook.com" -year=2022 -filepath=${TMPL_BODY_FILE}
 
 printf "}\n" >> ${TMPL_SUBJ_FILE}
 go fmt ${TMPL_SUBJ_FILE}
-versioned -addlicense -copyright="Paul Greenberg greenpau@outlook.com" -year=2022 -filepath=${TMPL_SUBJ_FILE}
+# versioned -addlicense -copyright="Paul Greenberg greenpau@outlook.com" -year=2022 -filepath=${TMPL_SUBJ_FILE}

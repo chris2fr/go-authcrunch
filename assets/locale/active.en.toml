@@ -1,0 +1,16 @@
+app-description = "AuthDB management client"
+hello = "Hello!"
+add = "add database objects"
+app-description = "AuthDB management client"
+config = "Sets `PATH` to configuration file"
+connect = "connect to auth portal and obtain access token"
+debug = "Enabled debug logging"
+format = "Sets `NAME` of the output format"
+list = "list database objects"
+metadata = "fetch metadata"
+token-path = "Sets `PATH` to token file"
+
+[DuplicatePortalMsg]
+description = "An error when two portals have the same name"
+one = "duplicate authentication portal name"
+other = "duplicate authentication portal names"

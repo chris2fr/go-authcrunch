@@ -27,6 +27,10 @@ import (
 	"github.com/greenpau/go-authcrunch/pkg/registry"
 	"github.com/greenpau/go-authcrunch/pkg/sso"
 	"go.uber.org/zap"
+
+	"github.com/BurntSushi/toml"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
+	"golang.org/x/text/language"
 )
 
 type refMap struct {
@@ -65,14 +69,28 @@ func newRefMap() refMap {
 // NewServer returns an instance of Server.
 func NewServer(config *Config, logger *zap.Logger) (*Server, error) {
 	var authenticators []authproxy.Authenticator
+	bundle := i18n.NewBundle(language.English)
+	bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
+	// No need to load active.en.toml since we are providing default translations.
+	// bundle.MustLoadMessageFile("active.en.toml")
+	// bundle.MustLoadMessageFile("active.es.toml")
+	localizer := i18n.NewLocalizer(bundle, "en", "en,fr")
+	duplicatePortalMsg := localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:          "DuplicatePortalMsg",
+			Description: "An error when two portals have the same name",
+			One:         "duplicate authentication portal name",
+			Other:       "duplicate authentication portal names",
+		},
+	})
 	if err := config.Validate(); err != nil {
 		return nil, err
 	}
 
 	srv := &Server{
-		config:    config,
-		logger:    logger,
-		nameRefs:  newRefMap(),
+		config:   config,
+		logger:   logger,
+		nameRefs: newRefMap(),
 	}
 
 	for _, cfg := range config.IdentityProviders {
@@ -147,7 +165,7 @@ func NewServer(config *Config, logger *zap.Logger) (*Server, error) {
 		}
 
 		if _, exists := srv.nameRefs.portals[cfg.Name]; exists {
-			return nil, errors.ErrNewServer.WithArgs("duplicate authentication portal name", cfg.Name)
+			return nil, errors.ErrNewServer.WithArgs(duplicatePortalMsg, cfg.Name)
 		}
 
 		srv.nameRefs.portals[cfg.Name] = portal

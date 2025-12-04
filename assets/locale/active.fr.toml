@@ -1,0 +1,15 @@
+app-description = "Client de gestion « AUTHDB »"
+hello = "Bonjour!"
+add = "ajouter des objets à la base de données"
+config = "mettre `PATH` au fichier de configuration"
+connect = "connecter à un auth portal puis obtenir un access token"
+debug = "Journal de debug"
+format = "Défenir le `NAME` du format de sorti"
+list = "lister les objets de la base de données"
+metadata = "obtenir es metadata"
+token-path = "Metre `PATH` au fichier de token"
+
+[DuplicatePortalMsg]
+description = "An error when two portals have the same name"
+one = "Nom de portail en double"
+other = "Noms de portail en doublue"
